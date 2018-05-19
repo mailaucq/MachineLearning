@@ -1,0 +1,47 @@
+\documentclass[preview,border=4mm,convert={density=600,outext=.png}]{standalone}
+\usepackage{tikz}
+\begin{document}
+\pagestyle{empty}
+\def\layersep{3cm}
+\def\nodeinlayersep{2cm}
+
+\begin{tikzpicture}[
+   shorten >=1pt,->,
+   draw=black!50,
+    node distance=\layersep,
+    every pin edge/.style={<-,shorten <=1pt},
+    neuron/.style={circle,fill=black!25,minimum size=17pt,inner sep=0pt},
+    input neuron/.style={neuron, fill=green!50,},
+    output neuron/.style={neuron, fill=red!50},
+    hidden neuron/.style={neuron, fill=blue!50},
+    annot/.style={text width=4em, text centered},
+    bias/.style={neuron, fill=yellow!50},%<-- added %%%
+]
+    % Draw the input layer nodes
+    \foreach \name / \y in {0,...,3}{
+    \ifnum \y=0
+    \node[bias] (I-\y) at (0,-\y*\nodeinlayersep-1.5) {};
+    \else
+    \node[input neuron] (I-\name) at (0,-\y*\nodeinlayersep-1.5) {$f_{\y}^h(net_{p,\y}^h)$};  
+    \fi
+    };
+    % Draw the output layer node
+    \node[output neuron,pin={[pin edge={->}]right: $\hat{y}$}, right of=I-2] (o-O) {f(net)}; 
+    
+    % Annotate the layers% Connect every node in the hidden layer with the output layer
+    
+    \foreach \name / \y in {0,...,3}{
+    \ifnum \y=0
+    \path[red] (I-\y) edge node[near start] {$\theta_{1}^\sigma$}  (o-O);
+    \else
+    \path[red] (I-\y) edge node[near start] {$w_{1\y}^\sigma$} (o-O);
+    \fi
+    };
+   % \path[dashed,orange] (I-\source) edge node[near start] {$\theta_{\dest}^\sigma$}  (O);}; 
+    %\node[annot,left of=hl1] {Input layer};
+    \node[annot,above of=o-O, node distance=1cm,yshift=2cm] {Output};  
+\end{tikzpicture}
+% End of code
+\end{document}
+
+

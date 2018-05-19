@@ -1,0 +1,37 @@
+\documentclass[preview,border=4mm,convert={density=600,outext=.png}]{standalone}
+\usepackage{tikz}
+\begin{document}
+\pagestyle{empty}
+\def\layersep{3cm}
+\def\snodeinlayersep{2cm}
+
+\begin{tikzpicture}[
+   shorten >=1pt,->,
+   draw=black!50,
+    node distance=\layersep,
+    every pin edge/.style={<-,shorten <=1pt},
+    neuron/.style={circle,fill=black!25,minimum size=17pt,inner sep=0pt},
+    input neuron/.style={neuron, fill=green!50,},
+    output neuron/.style={neuron, fill=red!50},
+    hidden neuron/.style={neuron, fill=blue!50},
+    annot/.style={text width=4em, text centered},
+    bias/.style={neuron, fill=yellow!50},%<-- added %%%
+]
+    % Draw the input layer nodes
+    \foreach \name / \y in {0,...,4}{
+    \ifnum \y=3
+       \node at (0,-\y*\snodeinlayersep) {$\vdots$};
+    \else
+    \ifnum \y=4
+    \node[input neuron,pin={[pin edge={->}]right: $\hat{y_k}$}] (I-\name) at (0,-\y*\snodeinlayersep-1.5) {};  
+    \else
+    \node[input neuron,pin={[pin edge={->}]right: $\hat{y_\y}$}] (I-\name) at (0,-\y*\snodeinlayersep-1.5) {};  
+    \fi
+    \fi
+    };
+    \node[annot,above of=I-0] {Output};
+\end{tikzpicture}
+% End of code
+\end{document}
+
+
